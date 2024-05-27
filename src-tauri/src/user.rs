@@ -1,6 +1,7 @@
 // tauri-src/user.rs
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
+use tauri::command;
 
 use crate::schema::users;
 
@@ -18,6 +19,7 @@ pub struct NewUser<'a> {
     pub password: &'a str,
 }
 
+#[command]
 pub fn create_user<'a>(conn: &mut SqliteConnection, username: &'a str, password: &'a str) -> usize {
     use crate::schema::users;
 

@@ -5,12 +5,17 @@
 extern crate diesel;
 
 use tauri::command;
+use log::error;
 // use diesel::prelude::*;
 use crate::db::establish_connection;
 
 mod db;
 mod user;
 mod schema;// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
+
+/*
+Verifies the credentials of a user via the database
+ */
 #[command]
 fn verify_credentials(username: String, password: String) -> bool {
     if username == "admin" && password == "admin" {
@@ -20,6 +25,9 @@ fn verify_credentials(username: String, password: String) -> bool {
     }
 }
 
+/*
+Inserts a new user into the database
+ */
 #[command]
 fn register_user(username: String, password: String) -> bool {
     let mut connection = establish_connection();
@@ -28,7 +36,8 @@ fn register_user(username: String, password: String) -> bool {
 }
 
 fn main() {
-    let _connection = establish_connection();
+    // connect to the database
+    let connection = establish_connection();
 
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![verify_credentials, register_user])

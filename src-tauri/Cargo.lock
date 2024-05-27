@@ -3804,6 +3804,7 @@ dependencies = [
  "diesel_migrations",
  "dotenv",
  "libsqlite3-sys",
+ "log",
  "serde",
  "serde_json",
  "tauri",

@@ -32,7 +32,10 @@
                 const response = await invoke('verify_credentials', {username: userName, password: password});
                 if (response) {
                     console.log('Credentials verified successfully.');
-                    goto('/');
+                    // goto('/');
+
+                    // Register the user
+                    await registerUser();
                 } else {
                     console.error('Credentials verification failed.');
                     errorMsg = `Invalid credentials. Please try again.`;
@@ -44,6 +47,11 @@
                 isError = true;
             }
         }
+    }
+
+    const registerUser = async () => {
+        await invoke('register_user', {username: userName, password: password});
+        alert('User registered successfully.');
     }
 </script>
 

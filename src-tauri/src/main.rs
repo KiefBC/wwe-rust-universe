@@ -5,7 +5,7 @@
 extern crate diesel;
 
 use tauri::command;
-use diesel::prelude::*;
+// use diesel::prelude::*;
 use crate::db::establish_connection;
 
 mod db;
@@ -20,11 +20,18 @@ fn verify_credentials(username: String, password: String) -> bool {
     }
 }
 
-fn main() {
+#[command]
+fn register_user(username: String, password: String) -> bool {
     let mut connection = establish_connection();
+    user::create_user(&mut connection, &username, &password);
+    true
+}
+
+fn main() {
+    let _connection = establish_connection();
 
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![verify_credentials])
+        .invoke_handler(tauri::generate_handler![verify_credentials, register_user])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

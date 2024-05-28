@@ -2,20 +2,24 @@
     import {invoke} from "@tauri-apps/api/tauri";
     import {goto} from '$app/navigation';
 
-    let userName = '';
+    let username = '';
     let password = '';
     let errorMsg = '';
     let isError = false;
 
+    /*
+    This is for forcing the user to enter a username and password of certain length.
+    This is called by the Register Button on the /Register page.
+     */
     const verifyCredentials = async () => {
         console.log('Verifying credentials...');
 
         // Confirm the values are greater than 4
-        if (userName.length < 4 && password.length < 4) {
+        if (username.length < 4 && password.length < 4) {
             errorMsg = `Username & Password must be at least 4 characters long.`;
             isError = true;
             return;
-        } else if (userName.length < 4) {
+        } else if (username.length < 4) {
             errorMsg = `Username must be at least 4 characters long.`;
             isError = true;
             return;
@@ -24,35 +28,30 @@
             isError = true;
             return;
         } else {
-            console.log(`Username: ${userName}, Password: ${password}`);
+            console.log(`Username: ${username}, Password: ${password}`);
             isError = false;
 
-            // Send the credentials to the backend
             try {
-                const response = await invoke('verify_credentials', {username: userName, password: password});
-                if (response) {
-                    console.log('Credentials verified successfully.');
-                    // goto('/');
+                // Send the credentials to the backend to register the user
+                const registerUser = await invoke('register_user', {username: username, password: password});
 
-                    // Register the user
-                    await registerUser();
-                } else {
-                    console.error('Credentials verification failed.');
-                    errorMsg = `Invalid credentials. Please try again.`;
-                    isError = true;
+                // If the user is registered, redirect to the login page
+                if (registerUser) {
+                    goto('/');
                 }
-            } catch (e) {
-                console.error(e);
-                errorMsg = `An error occurred while verifying credentials.`;
+            } catch (error) {
+                console.error(error);
+                errorMsg = `User already exists. Please try again.`;
                 isError = true;
             }
         }
     }
 
-    const registerUser = async () => {
-        await invoke('register_user', {username: userName, password: password});
-        alert('User registered successfully.');
-    }
+    /*
+    This is used for Registering Users into the system.
+    This is called by the verifyCredentials function.
+    It then calls register_user in the backend.
+     */
 </script>
 
 <div class="flex min-h-full flex-col justify-center px-6 py-3 lg:px-8">
@@ -70,7 +69,7 @@
             <div>
                 <label for="username" class="block text-sm font-medium leading-6 text-white">Username</label>
                 <div class="mt-2">
-                    <input id="username" name="username" type="text" required bind:value={userName}
+                    <input id="username" name="username" type="text" required bind:value={username}
                            class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
                 </div>
             </div>
@@ -94,7 +93,7 @@
                 <!-- Register -->
                 <button type="submit"
                         class="flex w-full justify-center rounded-md bg-blue-500 px-3 py-1.5 mt-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                        on:click|preventDefault={registerUser}>
+                        on:click|preventDefault={verifyCredentials}>
                     Register
                 </button>
             </div>

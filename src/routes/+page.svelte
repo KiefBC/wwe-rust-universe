@@ -32,7 +32,7 @@
                 const response = await invoke('verify_credentials', {username: userName, password: password});
                 if (response) {
                     console.log('Credentials verified successfully.');
-                    goto('/');
+                    await goto('/');
                 } else {
                     console.error('Credentials verification failed.');
                     errorMsg = `Invalid credentials. Please try again.`;

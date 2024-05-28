@@ -8,6 +8,7 @@ use tauri::command;
 use log::error;
 // use diesel::prelude::*;
 use crate::db::establish_connection;
+use crate::user::{create_user, find_username};
 
 mod db;
 mod user;
@@ -18,10 +19,20 @@ Verifies the credentials of a user via the database
  */
 #[command]
 fn verify_credentials(username: String, password: String) -> bool {
-    if username == "admin" && password == "admin" {
-        true
-    } else {
-        false
+    let mut connection = establish_connection();
+    let user = user::get_user(&mut connection, &username);
+    match user {
+        Some(u) => {
+            if u.password == password {
+                true
+            } else {
+                false
+            }
+        }
+        None => {
+            error!("User not found");
+            false
+        }
     }
 }
 
@@ -29,10 +40,27 @@ fn verify_credentials(username: String, password: String) -> bool {
 Inserts a new user into the database
  */
 #[command]
-fn register_user(username: String, password: String) -> bool {
+fn register_user(username: String, password: String) -> Result<bool, String> {
     let mut connection = establish_connection();
-    user::create_user(&mut connection, &username, &password);
-    true
+
+    println!("Finding username in database via register_user() main.rs");
+    match find_username(&mut connection, &username) {
+
+        Ok(Some(_)) => {
+            // User already exists
+            return Err(format!("User {} already exists", username));
+        },
+
+        Ok(None) => {
+            println!("Creating user in database via register_user() x2");
+            // Username is available
+            match create_user(&mut connection, &username, &password) {
+                Ok(_) => Ok(true),
+                Err(err) => Err(format!("Error creating user: {}", err)),
+            }
+        },
+        Err(err) => Err(format!("Error finding user: {}", err)),
+    }
 }
 
 fn main() {

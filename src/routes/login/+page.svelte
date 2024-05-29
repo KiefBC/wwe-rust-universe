@@ -1,108 +1,135 @@
 <script lang="ts">
     import {invoke} from "@tauri-apps/api/tauri";
+    import {goto} from '$app/navigation';
 
-    let username = "";
-    let password = "";
-    let loginResponse = "";
+    let userName = '';
+    let password = '';
+    let errorMsg = '';
+    let isError = false;
 
-    // These variables are used to change the color of the input fields based on the user input.
-    $: usernameInput = username ? 'is-success' : 'is-danger';
-    $: passwordInput = password ? 'is-success' : 'is-danger';
-    $: loginResponseOutput = loginResponse === "Please enter a Username & Password." ? 'notification is-danger' : '';
-    $: loginResponseOutput = loginResponse === "Username & Password Validated." ? 'notification is-success' : loginResponseOutput;
+    const verifyCredentials = async () => {
+        console.log('Verifying credentials...');
 
-    /*
-    This function is called when the form is submitted.
-     */
-    const login_validation = async () => {
-        if (validate_login(username, password)) {
-            loginResponse = await invoke("login_validation", { username: username, password: password });
+        // Confirm the values are greater than 4
+        if (userName.length < 4 && password.length < 4) {
+            errorMsg = `Username & Password must be at least 4 characters long.`;
+            isError = true;
+            return;
+        } else if (userName.length < 4) {
+            errorMsg = `Username must be at least 4 characters long.`;
+            isError = true;
+            return;
+        } else if (password.length < 4) {
+            errorMsg = `Password must be at least 4 characters long.`;
+            isError = true;
+            return;
         } else {
-            loginResponse = "Please enter a Username & Password.";
+            console.log(`Username: ${userName}, Password: ${password}`);
+            isError = false;
+
+            try {
+                // Send the credentials to the backend to be verified
+                const response = await invoke('verify_credentials', {username: userName, password: password});
+                if (response) {
+                    console.log('Credentials verified successfully.');
+                    await goto('/');
+                } else {
+                    console.error('Credentials verification failed.');
+                    errorMsg = `Invalid credentials. Please try again.`;
+                    isError = true;
+                }
+            } catch (e) {
+                console.error(e);
+                errorMsg = `An error occurred while verifying credentials.`;
+                isError = true;
+            }
         }
-    };
-
-    /*
-    This function checks if the user inputted a valid username ad password.
-     */
-    const validate_login = (username: string, password: string): boolean => {
-        return !(username === "" || password === "");
-    };
-
-    const changeView = () => {
-        currentView.set("register");
-    };
+    }
 </script>
 
-<div class="container px-5 has-text-centered">
-    <p class="mb-5 has-text-danger">Please login to continue</p>
-    <!-- Login Form -->
-    <div class="field is-horizontal">
-        <div class="field-body">
-            <!-- user name input -->
-            <div class="field">
-                <p class="control has-icons-left has-icons-right">
-                    <input class="input {usernameInput}" type="text" bind:value={username} placeholder="Username"/>
-                    <span class="icon is-small is-left">
-                        <FontAwesomeIcon icon={faUser}/>
-                    </span>
-                    <span class="icon is-small is-right">
-                        <FontAwesomeIcon icon={faCheck}/>
-                    </span>
-                </p>
-                {#if username === ""}
-                    <p class="help is-danger">This username is EMPTY.</p>
-                {:else if username.length > 3}
-                    <p class="help is-success">This username is valid.</p>
-                {:else}
-                    <p class="help is-danger">This username is too short.</p>
-                {/if}
-
-            </div>
-
-            <!-- password input -->
-            <div class="field">
-                <p class="control has-icons-left has-icons-right">
-                    <input class="input {passwordInput}" type="text" bind:value={password} placeholder="Password"/>
-                    <span class="icon is-small is-left">
-                        <FontAwesomeIcon icon={faUser}/>
-                    </span>
-                    <span class="icon is-small is-right">
-                        <FontAwesomeIcon icon={faCheck}/>
-                    </span>
-                </p>
-                {#if password === ""}
-                    <p class="help is-danger">This password is EMPTY.</p>
-                {:else if password.length > 3}
-                    <p class="help is-success">This password is valid.</p>
-                {:else}
-                    <p class="help is-danger">This password is too short.</p>
-                {/if}
-            </div>
-        </div>
+<div class="flex min-h-full flex-col justify-center px-6 py-3 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+        <img class="mx-auto h-32 w-auto" src="logo.png"
+             alt="Your Company">
+        <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-white">Placeholder</h2>
     </div>
 
-    <!-- Submit button -->
-    <div class="field">
-        <div class="field-label">
-            <!-- Left empty for spacing -->
-        </div>
-        <div class="field-body">
-            <div class="field">
-                <div class="control">
-                    <!-- Login Button -->
-                    <button class="button is-danger is-outlined" on:click={login_validation}>
-                        Login
-                    </button>
-                    <!-- Register Button -->
-                    <button class="ml-2 button is-info is-outlined" on:click={changeView}>
-                        Register
-                    </button>
+    <!-- Form -->
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <form class="space-y-6" action="#" method="POST">
+
+            <!-- Username -->
+            <div>
+                <label for="username" class="block text-sm font-medium leading-6 text-white">Username</label>
+                <div class="mt-2">
+                    <input id="username" name="username" type="text" required bind:value={userName}
+                           class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Display the greeting message -->
-    <p id="login-response" class="{loginResponseOutput}">{loginResponse}</p>
+            <!-- Password -->
+            <div>
+                <div class="flex items-center justify-between">
+                    <label for="password" class="block text-sm font-medium leading-6 text-white">Password</label>
+                    <div class="text-sm">
+                        <a href="#" class="font-semibold text-indigo-400 hover:text-indigo-300">Forgot password?</a>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <input id="password" name="password" type="password" required bind:value={password}
+                           class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div>
+                <!-- Sign In -->
+                <button type="submit"
+                        class="flex w-full justify-center rounded-md bg-red-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                        on:click|preventDefault={verifyCredentials}>
+                    Sign In
+                </button>
+                <!-- Register -->
+                <button type="submit"
+                        class="flex w-full justify-center rounded-md bg-blue-500 px-3 py-1.5 mt-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                        on:click={() => goto('/register')}>
+                    Register
+                </button>
+            </div>
+        </form>
+
+        {#if isError}
+            <div class="rounded-md bg-yellow-50 p-4 mt-3">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                  d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-yellow-800">Attention needed</h3>
+                        <div class="mt-2 text-sm text-yellow-700">
+                            <p>{errorMsg}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {/if}
+
+        <p class="mt-10 text-center text-sm text-gray-400">App built with Sveltekit and Tailwind</p>
+    </div>
 </div>
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        :root {
+            color: #f6f6f6;
+            background-color: #2f2f2f;
+        }
+    }
+</style>
+
+<slot/>

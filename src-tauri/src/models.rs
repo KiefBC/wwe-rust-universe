@@ -1,4 +1,4 @@
-// tauri-src/user.rs
+// tauri-src/models
 use diesel::prelude::*;
 use diesel::result::Error;
 use serde::{Deserialize, Serialize};
@@ -37,8 +37,12 @@ pub fn create_user<'a>(conn: &mut SqliteConnection, username: &'a str, password:
         .execute(conn)
 }
 
+/*
+find_username function is a simple, straightforward function for finding a user in a database
+by their username. It demonstrates how to construct and
+execute a SQL query using Diesel's query builder, and how to handle the results.
+ */
 pub fn find_username(conn: &mut SqliteConnection, uname: &str) -> Result<Option<User>, Error> {
-    println!("Finding username in database via find_username() user.rs");
     use crate::schema::users::dsl::*;
 
     let user = users
@@ -56,8 +60,6 @@ NOTE: changed username to uname to avoid conflict with the username field in the
  */
 #[command]
 pub fn get_user(conn: &mut SqliteConnection, uname: &str) -> Option<User> {
-    println!("Getting user from database");
-
     use crate::schema::users::dsl::*;
 
     let user = users
@@ -65,9 +67,6 @@ pub fn get_user(conn: &mut SqliteConnection, uname: &str) -> Option<User> {
         .first::<User>(conn)
         .optional()
         .expect("Error loading user");
-
-    // Print out the user
-    println!("{:?}", user);
 
     user
 }

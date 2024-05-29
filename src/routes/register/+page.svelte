@@ -37,7 +37,7 @@
 
                 // If the user is registered, redirect to the login page
                 if (registerUser) {
-                    goto('/');
+                    await goto('/');
                 }
             } catch (error) {
                 console.error(error);

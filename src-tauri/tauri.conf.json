@@ -20,8 +20,9 @@
     "windows": [
       {
         "title": "wwe-rust-universe",
-        "width": 800,
-        "height": 650
+        "width": 1150,
+        "height": 840,
+        "resizable": false
       }
     ],
     "security": {

@@ -47,10 +47,10 @@
     }
 </script>
 
-<div class="flex min-h-full flex-col justify-center px-6 py-3 lg:px-8">
+<div class="flex min-h-full flex-col justify-center">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <img class="mx-auto h-32 w-auto" src="logo.png"
-             alt="Your Company">
+             alt="WWE Rust Universe">
         <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-white">Placeholder</h2>
     </div>
 
@@ -122,14 +122,3 @@
         <p class="mt-10 text-center text-sm text-gray-400">App built with Sveltekit and Tailwind</p>
     </div>
 </div>
-
-<style>
-    @media (prefers-color-scheme: dark) {
-        :root {
-            color: #f6f6f6;
-            background-color: #2f2f2f;
-        }
-    }
-</style>
-
-<slot/>

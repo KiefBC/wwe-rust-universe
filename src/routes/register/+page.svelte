@@ -123,14 +123,3 @@
         </p>
     </div>
 </div>
-
-<style>
-    @media (prefers-color-scheme: dark) {
-        :root {
-            color: #f6f6f6;
-            background-color: #2f2f2f;
-        }
-    }
-</style>
-
-<slot/>

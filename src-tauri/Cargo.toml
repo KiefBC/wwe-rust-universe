@@ -1,8 +1,8 @@
 [package]
 name = "wwe-rust-universe"
-version = "0.0.1"
+version = "0.0.5"
 description = "WWE Universe App to log and track your Universe Mode"
-authors = ["Kiefer"]
+authors = ["KiefBC"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

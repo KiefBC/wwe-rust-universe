@@ -1,7 +1,14 @@
-# Tauri + SvelteKit + TypeScript
+# The beginning of something great
 
-This template should help get you started developing with Tauri, SvelteKit and TypeScript in Vite.
+# WWE Universe Rust App
 
-## Recommended IDE Setup
+This is a simple Rust app that allows you to interact with the WWE Universe in ways you never thought possible.
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer).
+# Languages and Tools
+
+- Rust
+- Tauri
+- Sveltekit
+- Tailwind CSS
+- SQLite (Diesel ORM)
+- Typescript

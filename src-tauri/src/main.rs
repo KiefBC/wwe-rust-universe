@@ -1,9 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-extern crate diesel;
-
-use tauri::command;
+use tauri::{command, CustomMenuItem, Menu, Submenu};
 use log::error;
 use crate::db::establish_connection;
 use crate::models::{create_user, find_username};
@@ -78,7 +76,13 @@ fn register_user(username: String, password: String) -> Result<bool, String> {
 }
 
 fn main() {
+    let quit = CustomMenuItem::new("quit".to_string(), "Quit");
+    let submenu = Submenu::new("File", Menu::new().add_item(quit));
+    let menu = Menu::new()
+        .add_submenu(submenu);
+
     tauri::Builder::default()
+        .menu(menu)
         .invoke_handler(tauri::generate_handler![verify_credentials, register_user])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

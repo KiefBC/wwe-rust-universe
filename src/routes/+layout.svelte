@@ -38,8 +38,9 @@ TODO: <DEV> Add dropping of tables when closing the app
     </div>
 {/if}
 
-<!-- MAIN CONTENT -->
+<!-- MAIN CONTENT CONTAINER -->
 <div class="min-h-full">
+    <!-- NAVBAR -->
     <div class="mb-12">
         <nav class="">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -146,8 +147,7 @@ TODO: <DEV> Add dropping of tables when closing the app
             </div>
         </nav>
     </div>
-
-    <!-- MAIN CONTENT GOES HERE -->
+    <!-- MAIN CONTENT -->
     <main class="flex-grow">
         <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
             <slot/>

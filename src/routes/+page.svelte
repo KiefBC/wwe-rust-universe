@@ -5,6 +5,6 @@
     // Redirect to the profile page
     // This is for development purposes
     onMount(() => {
-        goto('/login');
+        goto('/profile');
     });
 </script>

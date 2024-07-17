@@ -76,13 +76,13 @@ fn register_user(username: String, password: String) -> Result<bool, String> {
 }
 
 fn main() {
-    let quit = CustomMenuItem::new("quit".to_string(), "Quit");
-    let submenu = Submenu::new("File", Menu::new().add_item(quit));
-    let menu = Menu::new()
-        .add_submenu(submenu);
+    // let quit = CustomMenuItem::new("quit".to_string(), "Quit");
+    // let submenu = Submenu::new("File", Menu::new().add_item(quit));
+    // let menu = Menu::new()
+    //     .add_submenu(submenu);
 
     tauri::Builder::default()
-        .menu(menu)
+        // .menu(menu)
         .invoke_handler(tauri::generate_handler![verify_credentials, register_user])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -2,8 +2,9 @@
 
 diesel::table! {
     users (id) {
-        id -> Nullable<Integer>,
+        id -> Int4,
         username -> Text,
         password -> Text,
+        created_at -> Timestamp,
     }
 }

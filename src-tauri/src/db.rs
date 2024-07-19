@@ -1,12 +1,74 @@
-use diesel::prelude::*;
-use diesel::sqlite::SqliteConnection;
 use std::env;
+use diesel::prelude::*;
 use dotenv::dotenv;
+use crate::models::{NewUser, User};
+use crate::schema::users::dsl::users;
 
-pub fn establish_connection() -> SqliteConnection {
-    dotenv().ok();
+pub fn establish_connection() -> PgConnection {
+    dotenv().ok().expect("Error loading .env file");
 
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    SqliteConnection::establish(&database_url)
+    PgConnection::establish(&database_url)
         .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
+}
+
+#[tauri::command]
+pub fn create_user(conn: &mut PgConnection, new_user: NewUser) -> User {
+    use crate::schema::users::dsl::*;
+
+    diesel::insert_into(users)
+        .values(&new_user)
+        .get_result(conn)
+        .expect("Error saving new user")
+}
+
+pub fn check_user_exists(conn: &mut PgConnection, username_check: &str) -> bool {
+    use crate::schema::users::dsl::*;
+
+    let user = users.filter(username.eq(username_check))
+        .first::<User>(conn)
+        .optional()
+        .expect("Error checking if user exists");
+
+    user.is_some()
+}
+
+#[tauri::command]
+pub fn verify_credentials(susername: String, spassword: String) -> bool {
+    use crate::schema::users::*;
+    println!("Verifying credentials...");
+
+    let conn = &mut establish_connection();
+    let results = users.filter(username.eq(&susername))
+        .filter(password.eq(&spassword))
+        .load::<User>(conn)
+        .expect("Error loading user");
+
+    for field in &results {
+        if field.username == susername && field.password == spassword {
+            println!("ID: {}", field.id);
+            println!("Username: {}", field.username);
+            println!("Password: {}", field.password);
+            println!("Created at: {}", field.created_at);
+            return true
+        }
+    }
+    false
+}
+
+#[tauri::command]
+pub fn register_user(susername: String, spassword: String) -> bool {
+    let conn = &mut establish_connection();
+    let new_user = NewUser {
+        username: &susername,
+        password: &spassword,
+    };
+
+    if check_user_exists(conn, &susername) {
+        println!("User already exists");
+        return false;
+    }
+
+    create_user(conn, new_user);
+    true
 }

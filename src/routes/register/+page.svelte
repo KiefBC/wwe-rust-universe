@@ -33,7 +33,7 @@
 
             try {
                 // Send the credentials to the backend to register the user
-                const registerUser = await invoke('register_user', {username: username, password: password});
+                const registerUser = await invoke('register_user', {susername: username, spassword: password});
 
                 // If the user is registered, redirect to the login page
                 if (registerUser) {

@@ -2,7 +2,7 @@
     import {invoke} from "@tauri-apps/api/tauri";
     import {goto} from '$app/navigation';
 
-    let userName = '';
+    let username = '';
     let password = '';
     let errorMsg = '';
     let isError = false;
@@ -11,11 +11,11 @@
         console.log('Verifying credentials...');
 
         // Confirm the values are greater than 4
-        if (userName.length < 4 && password.length < 4) {
+        if (username.length < 4 && password.length < 4) {
             errorMsg = `Username & Password must be at least 4 characters long.`;
             isError = true;
             return;
-        } else if (userName.length < 4) {
+        } else if (username.length < 4) {
             errorMsg = `Username must be at least 4 characters long.`;
             isError = true;
             return;
@@ -24,12 +24,12 @@
             isError = true;
             return;
         } else {
-            console.log(`Username: ${userName}, Password: ${password}`);
+            console.log(`Username: ${username}, Password: ${password}`);
             isError = false;
 
             try {
                 // Send the credentials to the backend to be verified
-                const response = await invoke('verify_credentials', {username: userName, password: password});
+                const response = await invoke('verify_credentials', {susername: username, spassword: password});
                 if (response) {
                     console.log('Credentials verified successfully.');
                     await goto('/profile');
@@ -62,8 +62,8 @@
             <div>
                 <label for="username" class="block text-sm font-medium leading-6 text-white">Username</label>
                 <div class="mt-2">
-                    <input id="username" name="username" type="text" required bind:value={userName}
-                           class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+                    <input id="username" name="username" type="text" required bind:value={username}
+                           autocomplete="off" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
                 </div>
             </div>
 
@@ -77,7 +77,7 @@
                 </div>
                 <div class="mt-2">
                     <input id="password" name="password" type="password" required bind:value={password}
-                           class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+                           autocomplete="off" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
                 </div>
             </div>
 

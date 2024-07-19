@@ -150,6 +150,7 @@ TODO: <DEV> Add dropping of tables when closing the app
     <!-- MAIN CONTENT -->
     <main class="flex-grow">
         <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+            <!-- Slot for the page content to be rendered -->
             <slot/>
         </div>
     </main>

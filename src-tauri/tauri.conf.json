@@ -2,7 +2,7 @@
   "build": {
     "beforeDevCommand": "pnpm dev",
     "beforeBuildCommand": "pnpm build",
-    "devPath": "http://localhost:3000",
+    "devPath": "http://localhost:30000",
     "distDir": "../build"
   },
   "package": {
@@ -22,7 +22,7 @@
         "title": "wwe-rust-universe",
         "width": 1150,
         "height": 840,
-        "resizable": false
+        "resizable": true
       }
     ],
     "security": {

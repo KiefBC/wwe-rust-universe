@@ -1,13 +1,12 @@
-use std::env;
 use diesel::prelude::*;
 use dotenv::dotenv;
+use dotenv_codegen::dotenv;
 use crate::models::{NewUser, User};
-use crate::schema::users::dsl::users;
 
 pub fn establish_connection() -> PgConnection {
     dotenv().ok().expect("Error loading .env file");
 
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let database_url = dotenv!("DATABASE_URL");
     PgConnection::establish(&database_url)
         .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
 }
@@ -25,23 +24,31 @@ pub fn create_user(conn: &mut PgConnection, new_user: NewUser) -> User {
 pub fn check_user_exists(conn: &mut PgConnection, username_check: &str) -> bool {
     use crate::schema::users::dsl::*;
 
-    let user = users.filter(username.eq(username_check))
-        .first::<User>(conn)
-        .optional()
-        .expect("Error checking if user exists");
+    let result = users.filter(username.eq(username_check))
+        .select(User::as_select())
+        .load(conn)
+        .expect("Error loading user");
 
-    user.is_some()
+    for field in &result {
+        if field.username == username_check {
+            println!("User exists");
+            return true
+        }
+    }
+
+    false
 }
 
 #[tauri::command]
 pub fn verify_credentials(susername: String, spassword: String) -> bool {
-    use crate::schema::users::*;
+    use crate::schema::users::dsl::*;
     println!("Verifying credentials...");
 
     let conn = &mut establish_connection();
     let results = users.filter(username.eq(&susername))
         .filter(password.eq(&spassword))
-        .load::<User>(conn)
+        .select(User::as_select())
+        .load(conn)
         .expect("Error loading user");
 
     for field in &results {

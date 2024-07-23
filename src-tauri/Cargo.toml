@@ -15,8 +15,8 @@ tauri = { version = "1.7.1", features = ["shell-open"] }
 dotenv = "0.15.0"
 dotenv_codegen = "0.15.0"
 chrono = "0.4"
-diesel = { version = "2.2.1", features = ["postgres", "chrono"] }
-
+diesel = { version = "2.2.1", features = ["postgres", "chrono", "r2d2"] }
+serial_test = "3.1.1"
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!

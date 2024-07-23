@@ -11,7 +11,6 @@ mod db;
 
 fn main() {
     tauri::Builder::default()
-        // .menu(menu)
         .invoke_handler(tauri::generate_handler![verify_credentials, register_user])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

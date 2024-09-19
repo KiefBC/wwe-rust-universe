@@ -6,7 +6,7 @@ mod tests {
     use crate::db::{create_user, check_user_exists, establish_connection, verify_credentials};
     use serial_test::serial;
 
-    fn reset_test_user(conn: &mut PgConnection)  {
+    fn reset_test_user(conn: &mut SqliteConnection)  {
         let test_user = NewUser { username: "Testing", password: "Testing" };
         let result = diesel::delete(users.filter(username.eq(test_user.username)))
             .filter(password.eq(test_user.password))

@@ -1,16 +1,14 @@
 // tauri-src/models
 use diesel::prelude::*;
 use crate::schema::users;
-use chrono::NaiveDateTime;
 
-#[derive(Debug, Queryable, Selectable)]
+#[derive(Debug, Queryable, Selectable, Identifiable)]
 #[diesel(table_name = users)]
-#[diesel(check_for_backend(diesel::pg::Pg))]
+#[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct User {
     pub id: i32,
     pub username: String,
     pub password: String,
-    pub created_at: NaiveDateTime,
 }
 
 #[derive(Insertable)]

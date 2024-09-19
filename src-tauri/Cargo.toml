@@ -12,10 +12,11 @@ tauri-build = { version = "1", features = [] }
 
 [dependencies]
 tauri = { version = "1.7.1", features = ["shell-open"] }
-dotenv = "0.15.0"
-dotenv_codegen = "0.15.0"
-chrono = "0.4"
-diesel = { version = "2.2.1", features = ["postgres", "chrono", "r2d2"] }
+#dotenv = "0.15.0"
+#dotenv_codegen = "0.15.0"
+dotenvy = "0.15"
+chrono = { version = "0.4", features = ["serde"] }
+diesel = { version = "2.2.0", features = ["sqlite", "returning_clauses_for_sqlite_3_35", "chrono"] }
 serial_test = "3.1.1"
 
 [features]

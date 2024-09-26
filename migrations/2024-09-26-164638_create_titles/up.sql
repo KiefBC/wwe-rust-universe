@@ -1,0 +1,7 @@
+-- Your SQL goes here
+CREATE TABLE belts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    current_holder_id ID INTEGER NULL,
+    FOREIGN KEY (current_holder_id) REFERENCES wrestlers(id)
+);

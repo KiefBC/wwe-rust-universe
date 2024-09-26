@@ -6,12 +6,24 @@ use log::{info, error};
 
 pub fn establish_connection() -> SqliteConnection {
     println!("CHECKING DB CONNECTION");
+
+    // Load environment variables from .env file
     dotenv().ok().expect("Error loading .env file");
 
+    // Retrieve the DATABASE_URL environment variable
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     println!("Database URL: {}", database_url); // Print the URL to verify
-    SqliteConnection::establish(&database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
+
+    // Establish the SQLite connection
+    let mut conn = SqliteConnection::establish(&database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url));
+
+    // Enable foreign key constraints using a raw SQL query
+    diesel::sql_query("PRAGMA foreign_keys = ON")
+        .execute(&mut conn)
+        .expect("Failed to enable foreign key constraints");
+
+    conn
 }
 
 #[tauri::command]

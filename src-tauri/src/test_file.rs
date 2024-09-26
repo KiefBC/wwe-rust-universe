@@ -3,8 +3,10 @@ mod tests {
     use crate::models::{NewUser};
     use crate::schema::users::dsl::*;
     use diesel::prelude::*;
-    use crate::db::{create_user, check_user_exists, establish_connection, verify_credentials};
+    use crate::db::{create_user, establish_connection};
+    use crate::auth::{ check_user_exists, verify_credentials };
     use serial_test::serial;
+    use log::info;
 
     // Helper function to reset and establish the connection
     fn setup_test_user<'a>() -> (SqliteConnection, NewUser<'a>) {
@@ -25,7 +27,7 @@ mod tests {
             .execute(conn)
             .expect("Error deleting test user");
 
-        println!("Deleted {} user", result);
+        info!("Deleted {} user", result);
     }
 
     #[test]
@@ -36,10 +38,10 @@ mod tests {
 
         let (mut conn, new_user) = setup_test_user();
         println!("Creating new user");
-        let user = create_user(&mut conn, new_user);
+        let user = create_user(&mut conn, new_user).expect("User not created");
 
         assert_eq!(user.username, "Testing");
-        assert_ne!(user.username, "Testing1");
+        assert_eq!(user.password, "Testing");
     }
 
     #[test]

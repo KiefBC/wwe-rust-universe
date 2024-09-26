@@ -2,7 +2,7 @@ use crate::models::{NewUser, User};
 use diesel::prelude::*;
 use dotenvy::dotenv;
 use std::env;
-use log::{info, warn, error};
+use log::{info, error};
 
 pub fn establish_connection() -> SqliteConnection {
     println!("CHECKING DB CONNECTION");

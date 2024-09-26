@@ -1,5 +1,4 @@
 use diesel::prelude::*;
-use diesel::result::Error;
 use crate::models::{User, NewUser};
 use crate::db::establish_connection;
 use crate::schema::users::dsl::*;

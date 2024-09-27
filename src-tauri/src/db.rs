@@ -1,4 +1,4 @@
-use crate::models::{NewUser, User};
+use crate::models::{ NewUser, User, Wrestler, NewWrestler, Title, NewTitle };
 use diesel::prelude::*;
 use dotenvy::dotenv;
 use std::env;
@@ -14,7 +14,6 @@ pub fn establish_connection() -> SqliteConnection {
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     println!("Database URL: {}", database_url); // Print the URL to verify
 
-    // Establish the SQLite connection
     let mut conn = SqliteConnection::establish(&database_url)
         .unwrap_or_else(|_| panic!("Error connecting to {}", database_url));
 
@@ -36,13 +35,51 @@ pub fn create_user(conn: &mut SqliteConnection, new_user: NewUser) -> Option<Use
         .get_result(conn)
     {
         Ok(user) => {
-            // Log the success message when the user is created
             info!("User '{}' created successfully", user.username);  // Assuming `user` has a `username` field
             Some(user)
         },
         Err(e) => {
-            // Log the error if the insertion fails
             error!("Error saving new user: {}", e);
+            None
+        }
+    }
+}
+
+#[tauri::command]
+pub fn create_wrestler(conn: &mut SqliteConnection, new_wrestler: NewWrestler) -> Option<Wrestler> {
+    use crate::schema::wrestlers::dsl::*;
+
+    match diesel::insert_into(wrestlers)
+        .values(&new_wrestler)
+        .returning(Wrestler::as_returning())
+        .get_result(conn)
+    {
+        Ok(wrestler) => {
+            info!("Wrestler '{}' created successfully", wrestler.name);  // Assuming `wrestler` has a `name` field
+            Some(wrestler)
+        },
+        Err(e) => {
+            error!("Error saving new wrestler: {}", e);
+            None
+        }
+    }
+}
+
+#[tauri::command]
+pub fn create_belt(conn: &mut SqliteConnection, new_title: NewTitle) -> Option<Title> {
+    use crate::schema::belts::dsl::*;
+
+    match diesel::insert_into(belts)
+        .values(&new_title)
+        .returning(Title::as_returning())
+        .get_result(conn)
+    {
+        Ok(title) => {
+            info!("Title '{}' created successfully", title.name);  // Assuming `title` has a `name` field
+            Some(title)
+        },
+        Err(e) => {
+            error!("Error saving new title: {}", e);
             None
         }
     }

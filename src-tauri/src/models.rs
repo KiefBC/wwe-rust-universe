@@ -1,4 +1,4 @@
-// tauri-src/models
+// tauri-src-1/models
 use diesel::prelude::*;
 use crate::schema::{ users, wrestlers, belts };
 // use diesel::Associations;

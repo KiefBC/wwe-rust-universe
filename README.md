@@ -15,12 +15,10 @@ This is a simple Rust app that allows you to interact with the WWE Universe in w
 
 # To Run
 
-*This assumes you have Cargo, Rustup installed*
+*This assumes you have Cargo, Rustup, Yarn & Diesel installed*
 
 1. Clone the repo
-2. `cargo install diesel_cli --no-default-features --features postgres` to install the diesel CLI
-3. `diesel setup` to setup the database
-4. `diesel migration run` to run the migrations 
-5. Run `pnpm install` to install the dependencies 
-6. Run `pnpm tauri dev` to start the app 
-7. Enjoy!
+2. `diesel setup` to setup the database
+3. `diesel migration run` to run the migrations 
+4. Run `yarn install` to install the dependencies 
+5. Run `yarn tauri dev` to start the app

@@ -31,7 +31,9 @@ jobs:
     # Step 4: Build the Rust project
     - name: Build Rust project
       run: cargo build --verbose
+      working-directory: ./src-tauri  # Specify the directory where Cargo.toml is located
 
     # Step 5: Run Rust tests from a specific file (test_file.rs)
     - name: Run specific Rust test file
-      run: cargo test # --test test_file --verbose if I want to specify files test_file is the test_file.rs
+      run: cargo test --verbose  # Optionally: cargo test --test test_file if you want to specify the test file
+      working-directory: ./src-tauri  # Specify the directory where Cargo.toml is located

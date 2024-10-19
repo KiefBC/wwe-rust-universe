@@ -1,0 +1,37 @@
+name: Test App
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Check out the repository
+    - uses: actions/checkout@v4
+
+    # Step 2: Set up Node.js to use Yarn
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18' # Specify the Node.js version you are using
+
+    # Step 3: Install JavaScript dependencies using Yarn
+    - name: Install dependencies
+      run: yarn install
+
+    # Step 4: Build the Rust project
+    - name: Build Rust project
+      run: cargo build --verbose
+
+    # Step 5: Run Rust tests from a specific file (test_file.rs)
+    - name: Run specific Rust test file
+      run: cargo test # --test test_file --verbose if I want to specify files test_file is the test_file.rs

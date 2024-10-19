@@ -2,7 +2,7 @@
 mod tests {
     use crate::auth::{check_user_exists, verify_credentials};
     use crate::db::{create_user, create_wrestler, establish_connection, create_belt};
-    use crate::models::{NewTitle, NewUser, NewWrestler};
+    use crate::models::{ NewTitle, NewUser, NewWrestler, User, Wrestler, Title };
     use crate::schema::users::dsl::{users, username, password};
     use crate::schema::wrestlers::dsl::{wrestlers, name as wrestler_name};
     use crate::schema::belts::dsl::{belts, name as belt_name};
@@ -44,16 +44,29 @@ mod tests {
     }
 
     // Resets the test user by deleting it if it exists
-    fn reset_test_user(conn: &mut SqliteConnection, test_user: &NewUser) {
-        let result = diesel::delete(users.filter(username.eq(test_user.username)))
-            .filter(password.eq(test_user.password))
-            .execute(conn)
-            .expect("Error deleting test user");
-
-        info!("Deleted {} user", result);
+fn reset_test_user(conn: &mut SqliteConnection, test_user: &NewUser) {
+    if let Ok(user) = users.filter(username.eq(test_user.username))
+        .filter(password.eq(test_user.password))
+        .first::<User>(conn)
+    {
+        println!("Deleting user: {:?}", user);
     }
 
+    let result = diesel::delete(users.filter(username.eq(test_user.username)))
+        .filter(password.eq(test_user.password))
+        .execute(conn)
+        .expect("Error deleting test user");
+
+    info!("Deleted {} user", result);
+}
+
     fn reset_test_wrestler(conn: &mut SqliteConnection, test_wrestler: &NewWrestler) {
+        if let Ok(wrestler) = wrestlers.filter(wrestler_name.eq(test_wrestler.name))
+            .first::<Wrestler>(conn)
+        {
+            println!("Deleting wrestler: {:?}", wrestler);
+        }
+
         let result = diesel::delete(wrestlers.filter(wrestler_name.eq(test_wrestler.name)))
             .execute(conn)
             .expect("Error deleting test wrestler");
@@ -62,6 +75,12 @@ mod tests {
     }
 
     fn reset_test_belt(conn: &mut SqliteConnection, test_belt: &NewTitle) {
+        if let Ok(belt) = belts.filter(belt_name.eq(test_belt.name))
+            .first::<Title>(conn)
+        {
+            println!("Deleting belt: {:?}", belt);
+        }
+
         let result = diesel::delete(belts.filter(belt_name.eq(test_belt.name)))
             .execute(conn)
             .expect("Error deleting test belt");
@@ -73,10 +92,7 @@ mod tests {
     #[serial]
     // Test to create a new user
     fn test_create_user() {
-        println!("Creating new user.... first deleting if it exists");
-
         let (mut conn, new_user) = setup_test_user();
-        println!("Creating new user");
         let user = create_user(&mut conn, new_user).expect("User not created");
 
         assert_eq!(user.username, "Testing");
@@ -87,8 +103,6 @@ mod tests {
     #[serial]
     // Test to create a new Wrestler
     fn test_create_wrestler() {
-        println!("Creating new wrestler.... first deleting if it exists");
-
         let (mut conn, new_wrestler) = setup_test_wrestler();
         info!("Creating new Wrestler");
         let wrestler = create_wrestler(&mut conn, new_wrestler).expect("Wrestler not created");
@@ -101,8 +115,6 @@ mod tests {
     #[serial]
     // Test to create a new Belt
     fn test_create_belt() {
-        println!("Creating new belt.... first deleting if it exists");
-
         let (mut conn, new_belt) = setup_test_belt();
         info!("Creating new Belt");
         let belt = create_belt(&mut conn, new_belt).expect("Belt not created");
@@ -115,8 +127,6 @@ mod tests {
     #[serial]
     // Test to check if user exists
     fn test_check_user_exists() {
-        println!("Checking if user exists");
-
         let (mut conn, new_user) = setup_test_user();
         create_user(&mut conn, new_user);
 
@@ -134,8 +144,6 @@ mod tests {
     #[serial]
     // Test to verify credentials of a user
     fn test_verify_credentials() {
-        println!("Verifying credentials");
-
         let (mut conn, new_user) = setup_test_user();
         create_user(&mut conn, new_user);
 

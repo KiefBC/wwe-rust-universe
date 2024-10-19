@@ -5,14 +5,8 @@ use std::env;
 use log::{info, error};
 
 pub fn establish_connection() -> SqliteConnection {
-    println!("CHECKING DB CONNECTION");
-
-    // Load environment variables from .env file
     dotenv().ok().expect("Error loading .env file");
-
-    // Retrieve the DATABASE_URL environment variable
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    println!("Database URL: {}", database_url); // Print the URL to verify
 
     let mut conn = SqliteConnection::establish(&database_url)
         .unwrap_or_else(|_| panic!("Error connecting to {}", database_url));
@@ -35,7 +29,7 @@ pub fn create_user(conn: &mut SqliteConnection, new_user: NewUser) -> Option<Use
         .get_result(conn)
     {
         Ok(user) => {
-            info!("User '{}' created successfully", user.username);  // Assuming `user` has a `username` field
+            info!("User '{}' created successfully", user.username);
             Some(user)
         },
         Err(e) => {
@@ -55,7 +49,7 @@ pub fn create_wrestler(conn: &mut SqliteConnection, new_wrestler: NewWrestler) -
         .get_result(conn)
     {
         Ok(wrestler) => {
-            info!("Wrestler '{}' created successfully", wrestler.name);  // Assuming `wrestler` has a `name` field
+            info!("Wrestler '{}' created successfully", wrestler.name);
             Some(wrestler)
         },
         Err(e) => {
@@ -75,7 +69,7 @@ pub fn create_belt(conn: &mut SqliteConnection, new_title: NewTitle) -> Option<T
         .get_result(conn)
     {
         Ok(title) => {
-            info!("Title '{}' created successfully", title.name);  // Assuming `title` has a `name` field
+            info!("Title '{}' created successfully", title.name);
             Some(title)
         },
         Err(e) => {

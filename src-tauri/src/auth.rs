@@ -1,8 +1,8 @@
-use diesel::prelude::*;
-use crate::models::{User, NewUser};
 use crate::db::establish_connection;
+use crate::models::{NewUser, User};
 use crate::schema::users::dsl::*;
-use log::{info, warn, error};
+use diesel::prelude::*;
+use log::{error, info, warn};
 
 pub fn check_user_exists(conn: &mut SqliteConnection, username_check: &str) -> bool {
     match users
@@ -14,7 +14,7 @@ pub fn check_user_exists(conn: &mut SqliteConnection, username_check: &str) -> b
         Ok(Some(_)) => {
             warn!("User exists");
             true
-        },
+        }
         Ok(None) => false,
         Err(err) => {
             error!("Error checking user existence: {:?}", err);
@@ -41,11 +41,11 @@ pub fn verify_credentials(susername: String, spassword: String) -> bool {
                 warn!("Invalid password");
                 false
             }
-        },
+        }
         Ok(None) => {
             warn!("User not found");
             false
-        },
+        }
         Err(err) => {
             error!("Error loading user: {:?}", err);
             false

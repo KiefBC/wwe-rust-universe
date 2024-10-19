@@ -1,11 +1,13 @@
 #[cfg(test)]
 mod tests {
-    use crate::auth::{check_user_exists, verify_credentials};
-    use crate::db::{create_user, create_wrestler, establish_connection, create_belt};
-    use crate::models::{ NewTitle, NewUser, NewWrestler, User, Wrestler, Title };
-    use crate::schema::users::dsl::{users, username, password};
-    use crate::schema::wrestlers::dsl::{wrestlers, name as wrestler_name};
-    use crate::schema::belts::dsl::{belts, name as belt_name};
+    extern crate wwe_rust_universe;
+
+    use wwe_rust_universe::auth::{check_user_exists, verify_credentials};
+    use wwe_rust_universe::db::{create_user, create_wrestler, establish_connection, create_belt};
+    use wwe_rust_universe::models::{NewTitle, NewUser, NewWrestler, User, Wrestler, Title};
+    use wwe_rust_universe::schema::users::dsl::{users, username, password};
+    use wwe_rust_universe::schema::wrestlers::dsl::{wrestlers, name as wrestler_name};
+    use wwe_rust_universe::schema::belts::dsl::{belts, name as belt_name};
     use diesel::prelude::*;
     use log::info;
     use serial_test::serial;

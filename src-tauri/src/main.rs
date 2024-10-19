@@ -5,7 +5,6 @@ use auth::{verify_credentials, register_user};
 
 mod models;
 mod schema;
-mod test_file;
 mod db;
 mod auth;
 

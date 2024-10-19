@@ -1,9 +1,13 @@
 [package]
-name = "wwe-rust-universe"
+name = "wwe_rust_universe"
 version = "0.0.5"
 description = "WWE Universe App to log and track your Universe Mode"
 authors = ["KiefBC"]
 edition = "2021"
+
+[lib]
+name = "wwe_rust_universe"
+path = "src/lib.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -11,7 +15,7 @@ edition = "2021"
 tauri-build = { version = "1", features = [] }
 
 [dependencies]
-tauri = { version = "1.7.1", features = ["shell-open"] }
+tauri = { version = "1.7.1", features = ["api-all"] }
 dotenvy = "0.15"
 chrono = { version = "0.4", features = ["serde"] }
 diesel = { version = "2.2.0", features = ["sqlite", "returning_clauses_for_sqlite_3_35", "chrono"] }

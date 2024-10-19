@@ -18,9 +18,9 @@ jobs:
     # Step 1: Check out the repository
     - uses: actions/checkout@v4
 
-    # Step 2: Install system dependencies
-    - name: Install GTK dependencies
-      run: sudo apt-get update && sudo apt-get install -y libgtk-3-dev
+    # Step 2: Install system dependencies, including GTK and libsoup
+    - name: Install GTK and libsoup dependencies
+      run: sudo apt-get update && sudo apt-get install -y libgtk-3-dev libsoup2.4-dev
 
     # Step 3: Set up Node.js to use Yarn
     - name: Set up Node.js

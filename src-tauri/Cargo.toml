@@ -7,7 +7,7 @@ edition = "2021"
 
 [lib]
 name = "wwe_rust_universe"
-path = "src/lib.rs"
+path = "src/main.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

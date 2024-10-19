@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    extern crate wwe_rust_universe;
+    // extern crate wwe_rust_universe;
 
     use wwe_rust_universe::auth::{check_user_exists, verify_credentials};
     use wwe_rust_universe::db::{create_user, create_wrestler, establish_connection, create_belt};

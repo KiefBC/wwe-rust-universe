@@ -3,10 +3,10 @@
 
 use auth::{verify_credentials, register_user};
 
-mod models;
-mod schema;
-mod db;
-mod auth;
+pub mod models;
+pub mod schema;
+pub mod db;
+pub mod auth;
 
 fn main() {
     colog::init();

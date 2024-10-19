@@ -37,7 +37,7 @@ jobs:
 
     # Step 3: Create .env file with DATABASE_URL in the root of wwe-rust-universe
     - name: Create .env file
-      run: echo "DATABASE_URL=app.db" > .env  # Using app.db in the root of the project
+      run: echo "DATABASE_URL=../app.db" > .env  # Using app.db in the root of the project
       working-directory: ./  # Place the .env file in the root of wwe-rust-universe
 
     # Step 4: Install Diesel CLI

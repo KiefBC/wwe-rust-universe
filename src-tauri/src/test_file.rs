@@ -44,21 +44,21 @@ mod tests {
     }
 
     // Resets the test user by deleting it if it exists
-fn reset_test_user(conn: &mut SqliteConnection, test_user: &NewUser) {
-    if let Ok(user) = users.filter(username.eq(test_user.username))
-        .filter(password.eq(test_user.password))
-        .first::<User>(conn)
-    {
-        println!("Deleting user: {:?}", user);
+    fn reset_test_user(conn: &mut SqliteConnection, test_user: &NewUser) {
+        if let Ok(user) = users.filter(username.eq(test_user.username))
+            .filter(password.eq(test_user.password))
+            .first::<User>(conn)
+        {
+            println!("Deleting user: {:?}", user);
+        }
+
+        let result = diesel::delete(users.filter(username.eq(test_user.username)))
+            .filter(password.eq(test_user.password))
+            .execute(conn)
+            .expect("Error deleting test user");
+
+        info!("Deleted {} user", result);
     }
-
-    let result = diesel::delete(users.filter(username.eq(test_user.username)))
-        .filter(password.eq(test_user.password))
-        .execute(conn)
-        .expect("Error deleting test user");
-
-    info!("Deleted {} user", result);
-}
 
     fn reset_test_wrestler(conn: &mut SqliteConnection, test_wrestler: &NewWrestler) {
         if let Ok(wrestler) = wrestlers.filter(wrestler_name.eq(test_wrestler.name))

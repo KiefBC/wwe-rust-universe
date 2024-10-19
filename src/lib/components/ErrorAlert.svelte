@@ -1,9 +1,8 @@
 <script lang="ts">
-    export let isError: boolean;
     export let errorMsg: string;
 </script>
 
-{#if isError}
+{#if errorMsg}  <!-- Show alert if errorMsg is non-empty -->
     <div class="rounded-md bg-yellow-50 p-4 mt-3">
         <div class="flex">
             <div class="flex-shrink-0">
@@ -16,7 +15,7 @@
             <div class="ml-3">
                 <h3 class="text-sm font-medium text-yellow-800">Attention needed</h3>
                 <div class="mt-2 text-sm text-yellow-700">
-                    <p>{errorMsg}</p>
+                    <p>{errorMsg}</p>  <!-- Display the error message -->
                 </div>
             </div>
         </div>

@@ -33,22 +33,27 @@ jobs:
           libayatana-appindicator3-dev \
           librsvg2-dev
 
-    # Step 3: Set up Node.js to use Yarn
+    # Step 3: Create .env file with DATABASE_URL in the root of wwe-rust-universe
+    - name: Create .env file
+      run: echo "DATABASE_URL=../app.db" > .env
+      working-directory: ./  # Place the .env file in the root of wwe-rust-universe
+
+    # Step 4: Set up Node.js to use Yarn
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '18' # Specify the Node.js version you are using
 
-    # Step 4: Install JavaScript dependencies using Yarn
+    # Step 5: Install JavaScript dependencies using Yarn
     - name: Install dependencies
       run: yarn install
 
-    # Step 5: Build the Rust project
+    # Step 6: Build the Rust project
     - name: Build Rust project
       run: cargo build --verbose
       working-directory: ./src-tauri  # Specify the directory where Cargo.toml is located
 
-    # Step 6: Run Rust tests from a specific file (test_file.rs)
+    # Step 7: Run Rust tests from a specific file (test_file.rs)
     - name: Run specific Rust test file
       run: cargo test --verbose  # Optionally: cargo test --test test_file if you want to specify the test file
       working-directory: ./src-tauri  # Specify the directory where Cargo.toml is located

@@ -35,38 +35,52 @@ jobs:
           sqlite3 \
           libsqlite3-dev  # Install SQLite and its development libraries
 
-    # Step 3: Create .env file with DATABASE_URL in the root of wwe-rust-universe
-    - name: Create .env file
-      run: echo "DATABASE_URL=../app.db" > .env  # Using app.db in the root of the project
-      working-directory: ./  # Place the .env file in the root of wwe-rust-universe
+    # Step 3: Install Rust
+    - name: Install Rust
+      run: curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y
+      shell: bash
 
-    # Step 4: Install Diesel CLI
+    # Add Rust to the PATH
+    - name: Add Rust to PATH
+      run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+    # Step 4: Create .env file in root directory
+    - name: Create .env file
+      run: echo "DATABASE_URL=./app.db" > .env
+      working-directory: ./  # Place the .env file in the root directory
+
+    # Step 5: Install Diesel CLI
     - name: Install Diesel CLI
       run: cargo install diesel_cli --no-default-features --features sqlite
 
-    # Step 5: Run Diesel setup and migrations
+    # Step 6: Run Diesel setup and migrations in the root directory
     - name: Diesel setup and migrations
       run: |
         diesel setup  # Set up the database
         diesel migration run  # Run migrations to create tables
       working-directory: ./  # Ensure the setup and migration are executed in the root
 
-    # Step 6: Set up Node.js to use Yarn
+    # Step 7: Set up Node.js to use Yarn
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '18' # Specify the Node.js version you are using
+        node-version: '20'  # Updated to Node.js version 20
 
-    # Step 7: Install JavaScript dependencies using Yarn
+    # Step 8: Install JavaScript dependencies using Yarn
     - name: Install dependencies
       run: yarn install
 
-    # Step 8: Build the Rust project
+    # Step 9: Build the Rust project
     - name: Build Rust project
       run: cargo build --verbose
       working-directory: ./src-tauri  # Specify the directory where Cargo.toml is located
 
-    # Step 9: Run Rust tests from a specific file (test_file.rs)
+    # Step 10: Set DATABASE_URL environment variable before running tests
+    - name: Set DATABASE_URL environment variable
+      run: echo "DATABASE_URL=$(pwd)/app.db" >> $GITHUB_ENV
+      working-directory: ./  # Set DATABASE_URL to the absolute path of app.db in root directory
+
+    # Step 11: Run Rust tests from a specific file (test_file.rs)
     - name: Run specific Rust test file
-      run: cargo test --verbose  # Optionally: cargo test --test test_file if you want to specify the test file
-      working-directory: ./src-tauri  # Specify the directory where Cargo.toml is located
+      run: cargo test --test test_file --verbose
+      working-directory: ./src-tauri  # Ensure tests run in the correct directory

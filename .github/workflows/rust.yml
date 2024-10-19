@@ -47,8 +47,8 @@ jobs:
     # Step 5: Run Diesel setup and migrations
     - name: Diesel setup and migrations
       run: |
-        diesel setup --locked  # Set up the database
-        diesel migration run --locked  # Run migrations to create tables
+        diesel setup  # Set up the database
+        diesel migration run  # Run migrations to create tables
       working-directory: ./  # Ensure the setup and migration are executed in the root
 
     # Step 6: Set up Node.js to use Yarn

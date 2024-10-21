@@ -1,0 +1,25 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  # For npm packages (TypeScript, SvelteKit, etc.)
+  - package-ecosystem: "npm"
+    directory: "/" # Directory where package.json is located
+    schedule:
+      interval: "weekly"
+
+  # For Rust packages (Tauri backend)
+  - package-ecosystem: "cargo"
+    directory: "/src-tauri" # Directory where Cargo.toml is located
+    schedule:
+      interval: "weekly"
+
+  # You can add more ecosystems as needed, such as GitHub Actions, Docker, etc.
+  # Example for GitHub Actions dependencies:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

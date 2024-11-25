@@ -1,9 +1,10 @@
 <script>
     import "../app.css";
+    import "shadcn-ui/styles.css";
+    import { Button } from "shadcn-ui";
 
     let isBannerVisible = true;
     let isProfileDropdownVisible = false;
-
 </script>
 
 <!--
@@ -150,6 +151,7 @@ TODO: <DEV> Add dropping of tables when closing the app
     <!-- MAIN CONTENT -->
     <main class="flex-grow">
         <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+            <Button>Click Me!</Button>
             <!-- Slot for the page content to be rendered -->
             <slot/>
         </div>

@@ -1,11 +1,11 @@
-use crate::models::{ NewUser, User, Wrestler, NewWrestler, Title, NewTitle };
+use crate::models::{NewTitle, NewUser, NewWrestler, Title, User, Wrestler};
 use diesel::prelude::*;
 use dotenvy::dotenv;
+use log::{error, info};
 use std::env;
-use log::{info, error};
 
 pub fn establish_connection() -> SqliteConnection {
-    dotenv().ok().expect("Error loading .env file");
+    dotenv().expect("Error loading .env file");
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
 
     let mut conn = SqliteConnection::establish(&database_url)
@@ -31,7 +31,7 @@ pub fn create_user(conn: &mut SqliteConnection, new_user: NewUser) -> Option<Use
         Ok(user) => {
             info!("User '{}' created successfully", user.username);
             Some(user)
-        },
+        }
         Err(e) => {
             error!("Error saving new user: {}", e);
             None
@@ -51,7 +51,7 @@ pub fn create_wrestler(conn: &mut SqliteConnection, new_wrestler: NewWrestler) -
         Ok(wrestler) => {
             info!("Wrestler '{}' created successfully", wrestler.name);
             Some(wrestler)
-        },
+        }
         Err(e) => {
             error!("Error saving new wrestler: {}", e);
             None
@@ -71,10 +71,11 @@ pub fn create_belt(conn: &mut SqliteConnection, new_title: NewTitle) -> Option<T
         Ok(title) => {
             info!("Title '{}' created successfully", title.name);
             Some(title)
-        },
+        }
         Err(e) => {
             error!("Error saving new title: {}", e);
             None
         }
     }
 }
+

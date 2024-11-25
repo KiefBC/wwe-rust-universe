@@ -18,7 +18,7 @@ tauri-build = { version = "1", features = [] }
 tauri = { version = "1.7.1" }
 dotenvy = "0.15"
 chrono = { version = "0.4", features = ["serde"] }
-diesel = { version = "2.2.0", features = ["sqlite", "returning_clauses_for_sqlite_3_35", "chrono"] }
+diesel = { version = "2.2.5", features = ["sqlite", "returning_clauses_for_sqlite_3_35", "chrono"] }
 serial_test = "3.2.0"
 log = "0.4.22"
 env_logger = "0.11.5"

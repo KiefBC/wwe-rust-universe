@@ -1,7 +1,24 @@
-# Tauri + Leptos
+# The beginning of something great
 
-This template should help get you started developing with Tauri and Leptos.
+# WWE Universe Rust App
 
-## Recommended IDE Setup
+This is a simple Rust app that allows you to interact with the WWE Universe in ways you never thought possible.
 
-[VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer).
+# Languages and Tools
+
+- Rust
+- Tauri
+- Sveltekit
+- Tailwind CSS
+- SQLite (Diesel ORM)
+- Typescript
+
+# To Run
+
+*This assumes you have Cargo, Rustup, Yarn & Diesel installed*
+
+1. Clone the repo
+2. `diesel setup` to setup the database
+3. `diesel migration run` to run the migrations
+4. Run `yarn install` to install the dependencies
+5. Run `yarn tauri dev` to start the app

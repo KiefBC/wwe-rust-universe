@@ -28,4 +28,8 @@ diesel::table! {
 
 diesel::joinable!(titles -> wrestlers (current_holder_id));
 
-diesel::allow_tables_to_appear_in_same_query!(titles, users, wrestlers,);
+diesel::allow_tables_to_appear_in_same_query!(
+    titles,
+    users,
+    wrestlers,
+);

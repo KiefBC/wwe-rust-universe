@@ -12,6 +12,7 @@ use common::setup_test_belt;
 #[serial]
 // Test to create a new Belt
 fn test_create_belt() {
+    println!("test_create_belt!!!!!!!!!!");
     let (mut conn, new_belt) = setup_test_belt();
     info!("Creating new Belt");
     let belt = create_belt(&mut conn, new_belt).expect("Belt not created");

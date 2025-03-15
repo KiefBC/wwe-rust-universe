@@ -2,15 +2,12 @@
 use diesel::prelude::*;
 use log::info;
 
-// Import from the crate we're testing
-use wwe_universe_manager_lib::auth::{check_user_exists, verify_credentials};
-use wwe_universe_manager_lib::db::{
-    create_belt, create_user, create_wrestler, establish_connection,
-};
+// Import from the crate we're testing - only what we actually use
+use wwe_universe_manager_lib::db::{establish_connection};
 use wwe_universe_manager_lib::models::{NewTitle, NewUser, NewWrestler, Title, User, Wrestler};
-use wwe_universe_manager_lib::schema;
 
 // Helper function to reset and establish the connection
+#[allow(dead_code)]
 pub fn setup_test_user<'a>() -> (SqliteConnection, NewUser<'a>) {
     let mut conn = establish_connection();
     let test_user = NewUser {
@@ -22,6 +19,7 @@ pub fn setup_test_user<'a>() -> (SqliteConnection, NewUser<'a>) {
     (conn, test_user)
 }
 
+#[allow(dead_code)]
 pub fn setup_test_wrestler<'a>() -> (SqliteConnection, NewWrestler<'a>) {
     let mut conn = establish_connection();
     let test_wrestler = NewWrestler {
@@ -33,6 +31,7 @@ pub fn setup_test_wrestler<'a>() -> (SqliteConnection, NewWrestler<'a>) {
     (conn, test_wrestler)
 }
 
+#[allow(dead_code)]
 pub fn setup_test_belt<'a>() -> (SqliteConnection, NewTitle<'a>) {
     let mut conn = establish_connection();
     let test_belt = NewTitle { name: "Testing" };
@@ -42,7 +41,8 @@ pub fn setup_test_belt<'a>() -> (SqliteConnection, NewTitle<'a>) {
 }
 
 // Resets the test user by deleting it if it exists
-pub fn reset_test_user(conn: &mut SqliteConnection, test_user: &NewUser) {
+#[allow(dead_code)]
+fn reset_test_user(conn: &mut SqliteConnection, test_user: &NewUser) {
     // Import DSL items locally to avoid naming conflicts
     use wwe_universe_manager_lib::schema::users::dsl::{password, username, users};
 
@@ -62,7 +62,8 @@ pub fn reset_test_user(conn: &mut SqliteConnection, test_user: &NewUser) {
     info!("Deleted {} user", result);
 }
 
-pub fn reset_test_wrestler(conn: &mut SqliteConnection, test_wrestler: &NewWrestler) {
+#[allow(dead_code)]
+fn reset_test_wrestler(conn: &mut SqliteConnection, test_wrestler: &NewWrestler) {
     // Import DSL items locally
     use wwe_universe_manager_lib::schema::wrestlers::dsl::{name as wrestler_name, wrestlers};
 
@@ -80,7 +81,8 @@ pub fn reset_test_wrestler(conn: &mut SqliteConnection, test_wrestler: &NewWrest
     info!("Deleted {} wrestler", result);
 }
 
-pub fn reset_test_belt(conn: &mut SqliteConnection, test_belt: &NewTitle) {
+#[allow(dead_code)]
+fn reset_test_belt(conn: &mut SqliteConnection, test_belt: &NewTitle) {
     // Import DSL items locally
     use wwe_universe_manager_lib::schema::titles::dsl::{name as belt_name, titles};
 

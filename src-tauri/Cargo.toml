@@ -31,13 +31,3 @@ chrono = { version = "0.4", features = ["serde"] }
 serial_test = "3.1.1"
 argon2 = "0.5.3"
 log = "0.4.22"
-
-[profile.dev]
-incremental = true # Compile your binary in smaller steps.
-
-[profile.release]
-codegen-units = 1 # Allows LLVM to perform better optimization.
-lto = true        # Enables link-time-optimizations.
-opt-level = "s"   # Prioritizes small binary size. Use `3` if you prefer speed.
-panic = "abort"   # Higher performance by disabling panic handlers.
-strip = true      # Ensures debug symbols are removed.

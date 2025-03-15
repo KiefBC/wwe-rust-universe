@@ -1,12 +1,14 @@
-# The beginning of something great
+# WIP - 2025
 
-# WWE Universe Rust App
+I am currently re-writing this. I had a rush of creativity recently and have been focsed on porting the App to use Tauri 2.0, as well as fixing any and all errors that occur from this upgrade. I have also switched from using Svelte to Leptos. It's leading to a much more refined experience, seeing as how I get to use Rust throughout the entire project now.
+
+# WWE Universe Manager App
 
 This is a simple Rust app that allows you to interact with the WWE Universe in ways you never thought possible.
 
 # To Run
 
-*This assumes you have Cargo, Rustup, & Diesel installed*
+*This assumes you have Rustup, Diesel and sqlite installed*
 
 1. Clone the repo
 2. `diesel setup` to setup the database

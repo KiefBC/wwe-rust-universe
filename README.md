@@ -8,12 +8,13 @@ This is a simple Rust app that allows you to interact with the WWE Universe in w
 
 # To Run
 
-*This assumes you have Rustup, Diesel and sqlite installed*
+*This assumes you have Rustup, Diesel and sqlite installed. You may be able to use other databases such as MySQL or Postgres but I won't support them*
 
 1. Clone the repo
-2. `diesel setup` to setup the database
-3. `diesel migration run` to run the migrations
-4. Run `cargo tauri dev` to start the app
+2. `echo "DATABASE_URL=database.db" > .env` OR `echo "DATABASE_URL=sqlite:database.db" > .env` if you want to be more explicit. This is required to tell Diesel where the database is located.
+3. `diesel setup` to setup the database
+4. `diesel migration run` to run the migrations
+5. Run `cargo tauri dev` to start the app
 
 # Running Tests
 
